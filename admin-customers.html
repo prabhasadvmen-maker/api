@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Customers | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 style="font-size: 1.5rem;">Registered Customers</h2>
+                    <input type="text" class="form-control" placeholder="Search customers..." style="width: 250px;">
+                </div>
+                
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Company</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-customers">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('customers');
+            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('Customers');
+            
+            const tbody = document.getElementById('admin-customers');
+            const users = JSON.parse(localStorage.getItem('apiUsers') || '[]');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted" style="padding: 2rem;">No customers registered yet.</td></tr>`;
+            } else {
+                users.forEach(user => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: 500;">${user.fullName || (user.firstName + ' ' + user.lastName)}</td>
+                            <td>${user.company}</td>
+                            <td>${user.email}</td>
+                            <td><span class="status status-active">Active</span></td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="alert('Viewing documents for ${user.company}')">View Docs</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

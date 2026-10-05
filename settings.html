@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="card mb-6" style="max-width: 800px;">
+                    <div class="card-header">
+                        <h3 class="m-0">Profile Settings</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="profile-form">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" value="John">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" value="Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" value="demo@apicoast.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" value="+91 98765 43210">
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button type="button" class="btn btn-primary" onclick="showToast('Profile updated successfully!')">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card" style="max-width: 800px;">
+                    <div class="card-header">
+                        <h3 class="m-0">Security</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="security-form">
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button type="button" class="btn btn-primary" onclick="showToast('Password updated successfully!')">Update Password</button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-8 pt-6" style="border-top: 1px solid var(--border-color);">
+                            <h4 class="text-danger mb-2">Danger Zone</h4>
+                            <p class="text-muted mb-4" style="font-size: 0.875rem;">Deleting your account will permanently remove all data and revoke all API access.</p>
+                            <button class="btn btn-outline text-danger" style="color: var(--danger); border-color: var(--danger);">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('settings', 'Settings');
+        });
+    </script>
+</body>
+</html>

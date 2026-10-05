@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="doc-layout">
+                    <aside class="doc-sidebar hide-mobile">
+                        <ul class="doc-menu">
+                            <li><h4 style="padding: 0.5rem 1rem; color: var(--text-main); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Getting Started</h4></li>
+                            <li><a href="#" class="active">Introduction</a></li>
+                            <li><a href="#">Authentication</a></li>
+                            <li><a href="#">Base URL</a></li>
+                            <li><a href="#">Errors</a></li>
+                            
+                            <li><h4 style="padding: 0.5rem 1rem; margin-top: 1rem; color: var(--text-main); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">API References</h4></li>
+                            <li><a href="#">Maps & Location</a></li>
+                            <li><a href="#">OTP & SMS</a></li>
+                            <li><a href="#">Aadhaar / KYC</a></li>
+                            <li><a href="#">Payment Gateway</a></li>
+                            <li><a href="#">Webhooks</a></li>
+                        </ul>
+                    </aside>
+                    
+                    <div class="doc-content">
+                        <h1>Introduction to API</h1>
+                        <p class="text-muted mb-6" style="font-size: 1.125rem;">Learn how to integrate our enterprise services into your application.</p>
+                        
+                        <div class="mb-8">
+                            <h3>Overview</h3>
+                            <p class="mb-4">API provides a unified managed platform to access verified third-party APIs. Instead of managing dozens of vendors, you integrate with our gateway, and we handle the routing, SLA, and consolidated billing.</p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3>Authentication</h3>
+                            <p class="mb-4">All API requests must be authenticated using Bearer tokens. Include your Secret Key in the Authorization header of your HTTP request.</p>
+                            
+                            <div style="background-color: var(--header-bg); color: var(--text-light); padding: 1.5rem; border-radius: var(--radius-md); font-family: monospace; overflow-x: auto;">
+                                <div><span style="color: #fca5a5;">Authorization:</span> Bearer sk_live_your_secret_key</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3>Base URL</h3>
+                            <p class="mb-4">Use the following base URL for all production API requests:</p>
+                            <div style="background-color: var(--secondary-bg); padding: 1rem; border-radius: var(--radius-md); font-family: monospace; border: 1px solid var(--border-color);">
+                                https://api.apicoast.com/v1
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3>Demo Code Example (Node.js)</h3>
+                            <p class="mb-4">Here is a quick example of calling the OTP service endpoint.</p>
+                            
+                            <div style="background-color: var(--header-bg); color: #e2e8f0; padding: 1.5rem; border-radius: var(--radius-md); font-family: monospace; overflow-x: auto; font-size: 0.875rem; line-height: 1.6;">
+<span style="color: #c084fc;">const</span> axios = <span style="color: #60a5fa;">require</span>(<span style="color: #a7f3d0;">'axios'</span>);
+
+<span style="color: #c084fc;">async function</span> <span style="color: #60a5fa;">sendOTP</span>(phone) {
+  <span style="color: #c084fc;">try</span> {
+    <span style="color: #c084fc;">const</span> response = <span style="color: #c084fc;">await</span> axios.post(<span style="color: #a7f3d0;">'https://api.apicoast.com/v1/communication/otp'</span>, {
+      phone: phone
+    }, {
+      headers: {
+        <span style="color: #a7f3d0;">'Authorization'</span>: <span style="color: #a7f3d0;">'Bearer '</span> + process.env.API_COAST_SECRET_KEY,
+        <span style="color: #a7f3d0;">'Content-Type'</span>: <span style="color: #a7f3d0;">'application/json'</span>
+      }
+    });
+    console.log(response.data);
+  } <span style="color: #c084fc;">catch</span> (error) {
+    console.error(error.response.data);
+  }
+}
+                            </div>
+                            <p class="mt-4 text-muted text-sm">Note: These endpoints and credentials are examples until real backend endpoints are connected.</p>
+                        </div>
+                        
+                        <div class="flex justify-between mt-8 pt-8" style="border-top: 1px solid var(--border-color);">
+                            <div></div>
+                            <a href="#" class="btn btn-outline">Next: Authentication &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('documentation', 'API Documentation');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">API</a>
+        </div>
+    </nav>
+
+    <main class="main-content container">
+        <div class="mb-8 text-center">
+            <h1 class="mb-2">Checkout</h1>
+            <p class="text-muted">Complete your demo order to provision your services.</p>
+        </div>
+        
+        <div class="checkout-layout flex gap-8">
+            <div style="flex: 2;">
+                <form id="checkout-form">
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="m-0">Billing Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" name="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone *</label>
+                                    <input type="tel" class="form-control" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">GST Number (Optional)</label>
+                                    <input type="text" class="form-control" name="gstNumber">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Billing Address *</label>
+                                    <textarea class="form-control" name="address" required rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="m-0">Payment Method (Demo)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <label class="card card-body" style="cursor: pointer; border: 2px solid var(--accent-blue);">
+                                    <input type="radio" name="payment" value="UPI" checked style="margin-right: 0.5rem;"> UPI
+                                </label>
+                                <label class="card card-body" style="cursor: pointer;">
+                                    <input type="radio" name="payment" value="Card" style="margin-right: 0.5rem;"> Credit/Debit Card
+                                </label>
+                                <label class="card card-body" style="cursor: pointer;">
+                                    <input type="radio" name="payment" value="NetBanking" style="margin-right: 0.5rem;"> Net Banking
+                                </label>
+                                <label class="card card-body" style="cursor: pointer;">
+                                    <input type="radio" name="payment" value="BankTransfer" style="margin-right: 0.5rem;"> Bank Transfer
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div style="flex: 1;">
+                <div class="card" style="position: sticky; top: 100px;">
+                    <div class="card-header">
+                        <h3 class="m-0">Order Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-muted">Subtotal</span>
+                            <span id="checkout-subtotal" style="font-weight: 500;">₹0</span>
+                        </div>
+                        <div class="flex justify-between mb-4 pb-4" style="border-bottom: 1px solid var(--border-color);">
+                            <span class="text-muted">GST (18%)</span>
+                            <span id="checkout-tax">₹0</span>
+                        </div>
+                        <div class="flex justify-between mb-6">
+                            <span style="font-weight: 600; font-size: 1.125rem;">Total</span>
+                            <span id="checkout-total" style="font-weight: 700; font-size: 1.25rem; color: var(--accent-blue);">₹0</span>
+                        </div>
+                        <button type="submit" form="checkout-form" class="btn btn-primary w-full" style="padding: 1rem; font-size: 1rem;">Complete Demo Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const summaryStr = localStorage.getItem('apiOrderSummary');
+            if (summaryStr) {
+                const summary = JSON.parse(summaryStr);
+                const formatCurrency = (amount) => {
+                    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+                };
+                document.getElementById('checkout-subtotal').textContent = formatCurrency(summary.subtotal);
+                document.getElementById('checkout-tax').textContent = formatCurrency(summary.tax);
+                document.getElementById('checkout-total').textContent = formatCurrency(summary.total);
+            }
+
+            // Radio button highlight logic
+            const radios = document.querySelectorAll('input[name="payment"]');
+            radios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.querySelectorAll('input[name="payment"]').forEach(r => {
+                        r.closest('.card').style.borderColor = 'var(--border-color)';
+                    });
+                    if(e.target.checked) {
+                        e.target.closest('.card').style.borderColor = 'var(--accent-blue)';
+                    }
+                });
+            });
+
+            document.getElementById('checkout-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Generate demo order number
+                const orderNum = 'API-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+                localStorage.setItem('lastOrderNumber', orderNum);
+                
+                // Set mock active apis for dashboard
+                const cart = getCart();
+                localStorage.setItem('activeApis', JSON.stringify(cart));
+                
+                // Clear cart
+                clearCart();
+                
+                window.location.href = 'success.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Builder | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">API</a>
+            <button class="mobile-menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content container">
+        <div class="mb-8">
+            <h1 class="mb-2">Package Builder</h1>
+            <p class="text-muted">Review your selected services and proceed to configuration.</p>
+        </div>
+        
+        <div class="package-layout flex gap-8">
+            <div style="flex: 2;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Selected APIs</h3>
+                    </div>
+                    <div class="card-body" id="cart-items">
+                        <!-- Items rendered here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 1;">
+                <div class="card" style="position: sticky; top: 100px;">
+                    <div class="card-header">
+                        <h3 class="m-0">Order Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-muted">Subtotal (Annual)</span>
+                            <span id="summary-subtotal" style="font-weight: 500;">₹0</span>
+                        </div>
+                        <div class="flex justify-between mb-4 pb-4" style="border-bottom: 1px solid var(--border-color);">
+                            <span class="text-muted">GST (18%)</span>
+                            <span id="summary-tax">₹0</span>
+                        </div>
+                        <div class="flex justify-between mb-6">
+                            <span style="font-weight: 600; font-size: 1.125rem;">Total Estimated</span>
+                            <span id="summary-total" style="font-weight: 700; font-size: 1.25rem; color: var(--accent-blue);">₹0</span>
+                        </div>
+                        <a href="configuration.html" id="proceed-btn" class="btn btn-primary w-full" style="padding: 1rem; font-size: 1rem;">Proceed to Configuration</a>
+                        <p class="text-muted text-center mt-4" style="font-size: 0.75rem;">Prices are annual estimates. Actual billing is based on usage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const renderCart = () => {
+                const cartIds = getCart();
+                const container = document.getElementById('cart-items');
+                
+                if (cartIds.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center" style="padding: 3rem 0;">
+                            <div style="font-size: 3rem; color: var(--border-color); margin-bottom: 1rem;">🛒</div>
+                            <h3>Your package is empty</h3>
+                            <p class="text-muted mt-2 mb-4">Add some APIs from the marketplace to get started.</p>
+                            <a href="marketplace.html" class="btn btn-primary">Browse APIs</a>
+                        </div>
+                    `;
+                    document.getElementById('summary-subtotal').textContent = '₹0';
+                    document.getElementById('summary-tax').textContent = '₹0';
+                    document.getElementById('summary-total').textContent = '₹0';
+                    document.getElementById('proceed-btn').style.pointerEvents = 'none';
+                    document.getElementById('proceed-btn').style.opacity = '0.5';
+                    return;
+                }
+                
+                document.getElementById('proceed-btn').style.pointerEvents = 'auto';
+                document.getElementById('proceed-btn').style.opacity = '1';
+                
+                container.innerHTML = '';
+                let subtotal = 0;
+                
+                cartIds.forEach(id => {
+                    const api = apisData.find(a => a.id === id);
+                    if (!api) return;
+                    
+                    subtotal += api.price;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center py-4';
+                    item.style.borderBottom = '1px solid var(--border-color)';
+                    
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="api-icon" style="width: 40px; height: 40px; margin: 0;"><i class="ph ${api.icon}"></i></div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1rem;">${api.name}</h4>
+                                <span class="text-muted" style="font-size: 0.875rem;">${api.category}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <span style="font-weight: 600;">${formatCurrency(api.price)}</span>
+                            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; color: var(--danger); border-color: var(--danger);" onclick="removeAndRender('${api.id}')">Remove</button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+                
+                const tax = subtotal * 0.18;
+                const total = subtotal + tax;
+                
+                document.getElementById('summary-subtotal').textContent = formatCurrency(subtotal);
+                document.getElementById('summary-tax').textContent = formatCurrency(tax);
+                document.getElementById('summary-total').textContent = formatCurrency(total);
+                
+                // Save order details to localstorage for checkout
+                localStorage.setItem('apiOrderSummary', JSON.stringify({ subtotal, tax, total }));
+            };
+            
+            window.removeAndRender = (id) => {
+                removeFromCart(id);
+                renderCart();
+            };
+            
+            renderCart();
+        });
+    </script>
+</body>
+</html>

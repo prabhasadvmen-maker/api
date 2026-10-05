@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="stat-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Total Revenue (ARR)</h3>
+                            <div class="stat-value">₹1,45,89,000</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Active Customers</h3>
+                            <div class="stat-value">342</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>API Requests (24h)</h3>
+                            <div class="stat-value">8.4M</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Open Tickets</h3>
+                            <div class="stat-value" style="color: var(--warning);">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-4">
+                    <h2 style="font-size: 1.25rem;">Recent Orders</h2>
+                </div>
+                
+                <div class="card mb-8">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <h2 style="font-size: 1.25rem;">System Health</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Service Node</th>
+                                    <th>Status</th>
+                                    <th>Latency</th>
+                                    <th>Uptime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>API Gateway Primary</td>
+                                    <td><span class="status status-active">Healthy</span></td>
+                                    <td>12ms</td>
+                                    <td>99.99%</td>
+                                </tr>
+                                <tr>
+                                    <td>Verification Service</td>
+                                    <td><span class="status status-active">Healthy</span></td>
+                                    <td>145ms</td>
+                                    <td>99.95%</td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Webhooks</td>
+                                    <td><span class="status status-active">Healthy</span></td>
+                                    <td>8ms</td>
+                                    <td>100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('overview');
+            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('Admin Overview');
+            
+            // Mobile menu logic
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            if(mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    const sidebar = document.querySelector('.sidebar');
+                    if(sidebar.style.transform === 'translateX(0px)') {
+                        sidebar.style.transform = 'translateX(-100%)';
+                    } else {
+                        sidebar.style.transform = 'translateX(0px)';
+                        sidebar.style.transition = 'transform 0.3s ease';
+                    }
+                });
+            }
+            
+            const tbody = document.getElementById('admin-orders');
+            
+            // Mock orders
+            const orders = [
+                { id: localStorage.getItem('lastOrderNumber') || 'API-2026-1048', customer: 'Demo Customer', amount: JSON.parse(localStorage.getItem('apiOrderSummary') || '{"total": 288000}').total, status: 'Active', date: 'Just now' },
+                { id: 'API-2026-1047', customer: 'Fintech Solutions Ltd', amount: 450000, status: 'Active', date: '2 hours ago' },
+                { id: 'API-2026-1046', customer: 'Logistics Pro', amount: 120000, status: 'Pending', date: '1 day ago' },
+                { id: 'API-2026-1045', customer: 'Global E-commerce', amount: 850000, status: 'Active', date: '3 days ago' },
+            ];
+            
+            orders.forEach(o => {
+                const statusClass = o.status === 'Active' ? 'status-active' : 'status-pending';
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 500;">${o.id}</td>
+                        <td>${o.customer}</td>
+                        <td>${formatCurrency(o.amount)}</td>
+                        <td><span class="status ${statusClass}">${o.status}</span></td>
+                        <td class="text-muted" style="font-size: 0.875rem;">${o.date}</td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

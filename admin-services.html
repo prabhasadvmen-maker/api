@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Services | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 style="font-size: 1.5rem;">API Services Catalog</h2>
+                    <button class="btn btn-primary" onclick="alert('Feature coming soon')">+ Add New API</button>
+                </div>
+                
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>API Name</th>
+                                    <th>Category</th>
+                                    <th>Price / Year</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-services">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('services');
+            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('API Services');
+            
+            const tbody = document.getElementById('admin-services');
+            
+            apisData.forEach(api => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 500;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div class="api-icon" style="width: 32px; height: 32px; font-size: 1rem; margin: 0; border-radius: 6px;"><i class="ph ${api.icon}"></i></div>
+                                ${api.name}
+                            </div>
+                        </td>
+                        <td><span class="badge badge-blue">${api.category}</span></td>
+                        <td style="font-weight: 500;">${formatCurrency(api.price)}</td>
+                        <td><span class="status status-active">Published</span></td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
+                                <button class="btn btn-outline text-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-color: var(--danger); color: var(--danger);">Disable</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

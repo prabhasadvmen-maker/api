@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Details | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                API
+            </a>
+            <button class="mobile-menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li><a href="documentation.html" class="nav-link">Documentation</a></li>
+                <li><a href="support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="package.html" class="btn btn-outline" style="color: var(--text-light); border-color: rgba(255,255,255,0.3);">
+                    Cart <span class="cart-count" style="display: none;">0</span>
+                </a>
+                <a href="login.html" class="btn btn-primary">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content container">
+        <a href="marketplace.html" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: var(--text-muted);">
+            &larr; Back to Marketplace
+        </a>
+        
+        <div id="api-detail-container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+            <!-- Content loaded dynamically -->
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const apiId = urlParams.get('id');
+            const api = apisData.find(a => a.id === apiId);
+            
+            const container = document.getElementById('api-detail-container');
+            
+            if (!api) {
+                container.innerHTML = `<div><h1>API Not Found</h1><p>Please select a valid API from the marketplace.</p></div>`;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="card" style="padding: 2rem;">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="api-icon" style="width: 64px; height: 64px; font-size: 2rem;"><i class="ph ${api.icon}"></i></div>
+                        <span class="badge badge-blue" style="font-size: 1rem;">${api.category}</span>
+                    </div>
+                    <h1 class="mb-4">${api.name}</h1>
+                    <p class="text-muted" style="font-size: 1.125rem; margin-bottom: 2rem;">${api.description}</p>
+                    
+                    <h3 class="mb-4">Features</h3>
+                    <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-muted); line-height: 2;">
+                        <li>Enterprise SLA with 99.9% uptime</li>
+                        <li>Detailed analytics and monitoring</li>
+                        <li>Dedicated support channel</li>
+                        <li>Secure API access via OAuth2</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="card card-body" style="position: sticky; top: 100px;">
+                        <h3 class="mb-2">Pricing Estimate</h3>
+                        <div class="api-price mb-4" style="font-size: 2rem;">
+                            ${formatCurrency(api.price)} <span>/ year</span>
+                        </div>
+                        <p class="text-muted mb-6" style="font-size: 0.875rem;">
+                            Estimated annual service budget. Final pricing may vary depending on usage volume.
+                        </p>
+                        <button class="btn btn-primary w-full" style="padding: 1rem; font-size: 1rem;" onclick="addToCart('${api.id}')">Add to Project</button>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usage Analytics | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .chart-bar-container {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 1rem;
+            padding-top: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .chart-bar {
+            flex: 1;
+            background-color: var(--accent-blue);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            position: relative;
+        }
+        .chart-bar:hover {
+            background-color: var(--accent-blue-hover);
+        }
+        .chart-bar::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .chart-bar:hover::after {
+            opacity: 1;
+        }
+        .chart-labels {
+            display: flex;
+            gap: 1rem;
+        }
+        .chart-label {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <select class="form-control" style="width: 200px;">
+                            <option>Last 7 Days</option>
+                            <option selected>Last 30 Days</option>
+                            <option>This Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stat-grid mb-6">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Total Requests</h3>
+                            <div class="stat-value">1,245,892</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Success Rate</h3>
+                            <div class="stat-value" style="color: var(--success);">99.98%</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3>Avg Latency</h3>
+                            <div class="stat-value">42ms</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h3 class="m-0">Daily API Requests (Demo Data)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-bar-container">
+                            <div class="chart-bar" style="height: 40%;" data-val="12k"></div>
+                            <div class="chart-bar" style="height: 60%;" data-val="18k"></div>
+                            <div class="chart-bar" style="height: 55%;" data-val="16.5k"></div>
+                            <div class="chart-bar" style="height: 80%;" data-val="24k"></div>
+                            <div class="chart-bar" style="height: 45%;" data-val="13.5k"></div>
+                            <div class="chart-bar" style="height: 70%;" data-val="21k"></div>
+                            <div class="chart-bar" style="height: 90%;" data-val="27k"></div>
+                        </div>
+                        <div class="chart-labels">
+                            <div class="chart-label">Mon</div>
+                            <div class="chart-label">Tue</div>
+                            <div class="chart-label">Wed</div>
+                            <div class="chart-label">Thu</div>
+                            <div class="chart-label">Fri</div>
+                            <div class="chart-label">Sat</div>
+                            <div class="chart-label">Sun</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Usage by Service</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Requests</th>
+                                    <th>Data Transfer</th>
+                                    <th>Errors</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usage-list">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('usage', 'Usage Analytics');
+            
+            const activeIds = getActiveApis();
+            const tbody = document.getElementById('usage-list');
+            
+            if(activeIds.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">No data available.</td></tr>`;
+                return;
+            }
+            
+            activeIds.forEach(id => {
+                const api = apisData.find(a => a.id === id);
+                if(!api) return;
+                
+                const requests = Math.floor(Math.random() * 800000) + 50000;
+                const errors = Math.floor(Math.random() * 100);
+                const dataMB = (requests * 0.015).toFixed(2);
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 500;">${api.name}</td>
+                        <td>${requests.toLocaleString()}</td>
+                        <td>${dataMB} MB</td>
+                        <td>${errors} (<span style="color: var(--success);">${((requests - errors)/requests * 100).toFixed(4)}%</span>)</td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

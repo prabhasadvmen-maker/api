@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | API Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .auth-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--header-bg) 0%, #1e1b4b 100%);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .auth-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--secondary-bg);
+        }
+        .auth-form-wrapper {
+            background: var(--primary-bg);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 450px;
+        }
+        @media (max-width: 768px) {
+            .auth-left { display: none; }
+        }
+    </style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    
+    <div class="auth-container">
+        <div class="auth-left">
+            <a href="index.html" style="color: white; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="background: var(--accent-blue); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                API
+            </a>
+            <div>
+                <h1 style="font-size: 3rem; color: white; margin-bottom: 1rem; line-height: 1.2;">Welcome back.</h1>
+                <p style="color: #cbd5e1; font-size: 1.125rem; max-width: 400px;">Log in to manage your APIs, check your billing, and monitor your usage.</p>
+            </div>
+            <div style="font-size: 0.875rem; color: #94a3b8;">&copy; 2026 API Managed Services</div>
+        </div>
+        <div class="auth-right">
+            <div class="auth-form-wrapper">
+                <h2 style="margin-bottom: 0.5rem;">Sign In</h2>
+                <p class="text-muted mb-6">Enter your email and password to access your dashboard.</p>
+                
+                <form id="login-form">
+                    <div class="form-group mb-4">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" value="demo@api.com" required>
+                    </div>
+                    <div class="form-group mb-6">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" value="password123" required>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-6" style="font-size: 0.9375rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" checked> Remember me
+                        </label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full" style="padding: 1rem; font-size: 1rem;">Sign In</button>
+                    
+                    <div class="mt-6 text-center" style="font-size: 0.9375rem;">
+                        <span class="text-muted">Don't have an account?</span> <a href="signup.html">Create one</a>
+                    </div>
+                    <div class="mt-4 text-center" style="font-size: 0.875rem;">
+                        <a href="admin.html" class="text-muted">Admin Login (Demo)</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const result = loginUser(email, password);
+            if (result.success) {
+                window.location.href = 'dashboard.html';
+            } else {
+                showToast(result.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

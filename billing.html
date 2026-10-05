@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card card-body">
+                        <h3 class="mb-2 text-muted" style="font-size: 0.875rem;">Current Balance</h3>
+                        <div class="flex items-center gap-4">
+                            <span style="font-size: 2rem; font-weight: 700;">₹0.00</span>
+                            <span class="badge badge-blue">Settled</span>
+                        </div>
+                        <p class="text-sm mt-4 text-muted">You have no pending charges for this billing cycle.</p>
+                    </div>
+                    
+                    <div class="card card-body">
+                        <h3 class="mb-2 text-muted" style="font-size: 0.875rem;">Payment Method</h3>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div style="width: 48px; height: 32px; background-color: var(--secondary-bg); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; border: 1px solid var(--border-color);">
+                                VISA
+                            </div>
+                            <div>
+                                <div style="font-weight: 500;">•••• •••• •••• 4242</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Expires 12/28</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline w-full" style="padding: 0.5rem;">Update Payment Method</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Billing Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="billing-form">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Company Name</label>
+                                    <input type="text" class="form-control" value="Acme Corp">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">GST Number</label>
+                                    <input type="text" class="form-control" value="27AADCB2230M1Z2">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Billing Address</label>
+                                    <textarea class="form-control" rows="3">123 Business Park, Tower B, Tech Hub, Mumbai 400001, Maharashtra, India</textarea>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button type="button" class="btn btn-primary" onclick="showToast('Billing details updated successfully!')">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('billing', 'Billing');
+        });
+    </script>
+</body>
+</html>

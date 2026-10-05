@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Configuration | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">API</a>
+        </div>
+    </nav>
+
+    <main class="main-content container" style="max-width: 800px;">
+        <div class="mb-8 text-center">
+            <h1 class="mb-2">Project Configuration</h1>
+            <p class="text-muted">Tell us about how you plan to use these APIs so we can provision resources.</p>
+        </div>
+        
+        <div class="card card-body">
+            <form id="config-form" action="checkout.html">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Project Name *</label>
+                        <input type="text" class="form-control" name="projectName" required placeholder="e.g. Fintech App V2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Company Name *</label>
+                        <input type="text" class="form-control" name="companyName" required placeholder="Acme Corp">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Project Type *</label>
+                        <select class="form-control" name="projectType" required>
+                            <option value="">Select type...</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="Web Application">Web Application</option>
+                            <option value="Internal Tool">Internal Tool</option>
+                            <option value="B2B Integration">B2B Integration</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Expected Monthly Usage *</label>
+                        <select class="form-control" name="usage" required>
+                            <option value="">Select range...</option>
+                            <option value="0-10k">0 - 10,000 requests</option>
+                            <option value="10k-100k">10,000 - 100,000 requests</option>
+                            <option value="100k-1M">100,000 - 1M requests</option>
+                            <option value="1M+">1M+ requests</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Deployment Preference</label>
+                        <select class="form-control" name="deployment">
+                            <option value="Shared Cloud">Shared Cloud (Default)</option>
+                            <option value="Dedicated Instance">Dedicated Instance</option>
+                            <option value="On-Premise">On-Premise</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Required Integration Date</label>
+                        <input type="date" class="form-control" name="integrationDate" required>
+                    </div>
+                </div>
+                
+                <h3 class="mt-6 mb-4">Required Environments</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="env[]" value="Customer App"> Customer App
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="env[]" value="Partner App"> Partner App
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="env[]" value="Website"> Website
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="env[]" value="Admin Panel"> Admin Panel
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="env[]" value="Super Admin"> Super Admin Panel
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center pt-6" style="border-top: 1px solid var(--border-color);">
+                    <a href="package.html" class="btn btn-outline">Back to Package</a>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">Save & Continue to Checkout</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script>
+        document.getElementById('config-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const config = Object.fromEntries(formData.entries());
+            config.environments = formData.getAll('env[]');
+            
+            localStorage.setItem('apiProjectConfig', JSON.stringify(config));
+            window.location.href = 'checkout.html';
+        });
+    </script>
+</body>
+</html>

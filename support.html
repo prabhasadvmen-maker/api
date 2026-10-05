@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;" class="package-layout">
+                    <div>
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h3 class="m-0">Create Support Ticket</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="support-form">
+                                    <div class="form-group">
+                                        <label class="form-label">Issue Category</label>
+                                        <select class="form-control" required>
+                                            <option value="">Select category...</option>
+                                            <option>Technical Integration</option>
+                                            <option>Billing & Payments</option>
+                                            <option>Service Disruption</option>
+                                            <option>Account Management</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Related Service (Optional)</label>
+                                        <select class="form-control" id="support-services">
+                                            <option value="">Select service...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Subject</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" rows="5" required placeholder="Please describe your issue in detail..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">Submit Ticket</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h3 class="m-0">Contact Channels</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <div style="font-weight: 500;">Email Support</div>
+                                    <div class="text-muted" style="font-size: 0.875rem;">support@apicoast.com</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">24/7 Response within 4 hours</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div style="font-weight: 500;">Phone Support</div>
+                                    <div class="text-muted" style="font-size: 0.875rem;">+91 800 123 4567</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Mon-Fri, 9AM-6PM IST</div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 500;">Dedicated Account Manager</div>
+                                    <div class="text-muted" style="font-size: 0.875rem;">Sarah Jenkins</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Enterprise accounts only</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="m-0">Recent Tickets</h3>
+                            </div>
+                            <div class="card-body" style="padding: 0;">
+                                <div class="text-center text-muted" style="padding: 2rem; font-size: 0.875rem;">
+                                    No recent support tickets.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('support', 'Support');
+            
+            const select = document.getElementById('support-services');
+            apisData.forEach(api => {
+                const opt = document.createElement('option');
+                opt.value = api.id;
+                opt.textContent = api.name;
+                select.appendChild(opt);
+            });
+            
+            document.getElementById('support-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast('Ticket submitted successfully. We will get back to you soon.');
+                e.target.reset();
+            });
+        });
+    </script>
+</body>
+</html>

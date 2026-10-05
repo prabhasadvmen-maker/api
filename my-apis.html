@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My APIs | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="card">
+                    <div class="card-header flex justify-between items-center">
+                        <h3 class="m-0">Provisioned Services</h3>
+                        <a href="marketplace.html" class="btn btn-primary">Add More</a>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Renewal Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-apis-list">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('my-apis', 'My APIs');
+            
+            const activeIds = getActiveApis();
+            const tbody = document.getElementById('my-apis-list');
+            
+            if(activeIds.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted" style="padding: 3rem;">You haven't purchased any APIs yet.</td></tr>`;
+                return;
+            }
+            
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            const renewalDate = nextYear.toLocaleDateString('en-IN');
+            
+            activeIds.forEach(id => {
+                const api = apisData.find(a => a.id === id);
+                if(!api) return;
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 500;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div class="api-icon" style="width: 32px; height: 32px; font-size: 1rem; margin: 0;"><i class="ph ${api.icon}"></i></div>
+                                ${api.name}
+                            </div>
+                        </td>
+                        <td>${api.category}</td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td>${renewalDate}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a href="api-credentials.html" class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Keys</a>
+                                <a href="documentation.html" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Docs</a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script></head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            
+            <div class="content-area">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e0e7ff; color: #4338ca;"><i class="ph ph-lightning"></i></div>
+                        <div class="stat-content">
+                            <h3>Active Services</h3>
+                            <div class="stat-value" id="stat-active">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #dcfce7; color: #15803d;"><i class="ph ph-chart-bar"></i></div>
+                        <div class="stat-content">
+                            <h3>Requests This Month</h3>
+                            <div class="stat-value">1.2M</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fef9c3; color: #a16207;"><i class="ph ph-credit-card"></i></div>
+                        <div class="stat-content">
+                            <h3>Annual Budget</h3>
+                            <div class="stat-value" id="stat-budget">₹0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fee2e2; color: #b91c1c;"><i class="ph ph-warning"></i></div>
+                        <div class="stat-content">
+                            <h3>Failed Requests</h3>
+                            <div class="stat-value">0.02%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-6">
+                    <div class="card-header flex justify-between items-center">
+                        <h3 class="m-0">Recent Activity</h3>
+                        <a href="usage.html" style="font-size: 0.875rem;">View Full Usage</a>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>API Service</th>
+                                    <th>Status</th>
+                                    <th>Requests (30d)</th>
+                                    <th>Last Used</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard-apis">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard('dashboard', 'Overview');
+            
+            const activeIds = getActiveApis();
+            document.getElementById('stat-active').textContent = activeIds.length;
+            
+            const tbody = document.getElementById('dashboard-apis');
+            let totalBudget = 0;
+            
+            if(activeIds.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">No active services. <a href="marketplace.html">Browse Marketplace</a></td></tr>`;
+            } else {
+                activeIds.forEach(id => {
+                    const api = apisData.find(a => a.id === id);
+                    if(!api) return;
+                    
+                    totalBudget += api.price;
+                    
+                    const requests = Math.floor(Math.random() * 500000) + 10000;
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>
+                                <div style="font-weight: 500;">${api.name}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">${api.category}</div>
+                            </td>
+                            <td><span class="status status-active">Active</span></td>
+                            <td>${requests.toLocaleString()}</td>
+                            <td class="text-muted" style="font-size: 0.875rem;">2 mins ago</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            document.getElementById('stat-budget').textContent = formatCurrency(totalBudget);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* responsive.css */
+
+/* Mobile Menu Toggle */
+.mobile-menu-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-links, .nav-actions {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+        padding-top: 1rem;
+    }
+    
+    .nav-links.active, .nav-actions.active {
+        display: flex;
+    }
+
+    .navbar .container {
+        flex-wrap: wrap;
+    }
+    
+    .navbar-brand {
+        flex: 1;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .api-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .package-layout {
+        flex-direction: column;
+    }
+    
+    .checkout-layout {
+        flex-direction: column-reverse;
+    }
+    
+    .dashboard-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100% !important;
+        position: static !important;
+        height: auto !important;
+        min-height: auto !important;
+    }
+    
+    .main-panel {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    table {
+        min-width: 600px;
+    }
+}

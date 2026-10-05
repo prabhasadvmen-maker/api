@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Support Tickets | API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-container"></div>
+        <div class="main-panel">
+            <div id="topbar-container"></div>
+            <div class="content-area">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 style="font-size: 1.5rem;">Support Tickets</h2>
+                </div>
+                <div class="card">
+                    <div class="card-body text-center text-muted" style="padding: 4rem;">
+                        <i class="ph ph-wrench" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Module under active development</h3>
+                        <p>The Support Tickets management module is scheduled for the next release.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('support');
+            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('Support Tickets');
+        });
+    </script>
+</body>
+</html>
