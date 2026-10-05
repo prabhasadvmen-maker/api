@@ -139,7 +139,7 @@
     }
 
     /* Footer layout fix for hardcoded inline grid */
-    .footer .container > div[style*="grid"] {
+    .footer-grid {
         display: flex !important;
         flex-direction: column !important;
         gap: 2.5rem !important;
