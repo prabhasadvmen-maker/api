@@ -58,3 +58,27 @@ const renderAdminTopbar = (title) => {
         </div>
     `;
 };
+
+const initAdmin = (activePage, pageTitle) => {
+    document.getElementById('sidebar-container').innerHTML = renderAdminSidebar(activePage);
+    document.getElementById('topbar-container').innerHTML = renderAdminTopbar(pageTitle);
+    
+    const mobileBtn = document.querySelector('.mobile-menu-btn');
+    if(mobileBtn) {
+        let overlay = document.querySelector('.sidebar-overlay');
+        if(!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        const toggleSidebar = () => {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        };
+        
+        mobileBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+    }
+};

@@ -63,15 +63,22 @@ const initDashboard = (pageId, pageTitle) => {
     
     const mobileBtn = document.querySelector('.mobile-menu-btn');
     if(mobileBtn) {
-        mobileBtn.addEventListener('click', () => {
+        // Create overlay if it doesn't exist
+        let overlay = document.querySelector('.sidebar-overlay');
+        if(!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        const toggleSidebar = () => {
             const sidebar = document.querySelector('.sidebar');
-            if(sidebar.style.transform === 'translateX(0px)') {
-                sidebar.style.transform = 'translateX(-100%)';
-            } else {
-                sidebar.style.transform = 'translateX(0px)';
-                sidebar.style.transition = 'transform 0.3s ease';
-            }
-        });
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        };
+        
+        mobileBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
     }
 };
 

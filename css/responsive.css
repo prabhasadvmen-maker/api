@@ -1,16 +1,24 @@
-/* responsive.css */
+/* responsive.css - Fully responsive layouts */
 
-/* Mobile Menu Toggle */
+/* Hide mobile menu button on desktop */
 .mobile-menu-btn {
     display: none;
     background: transparent;
     border: none;
-    color: var(--text-light);
+    color: inherit;
     font-size: 1.5rem;
     cursor: pointer;
 }
 
+/* Utilities for hiding on mobile */
 @media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Navbar specific */
     .mobile-menu-btn {
         display: block;
     }
@@ -20,7 +28,8 @@
         flex-direction: column;
         width: 100%;
         gap: 1rem;
-        padding-top: 1rem;
+        padding-top: 1.5rem;
+        text-align: center;
     }
     
     .nav-links.active, .nav-actions.active {
@@ -34,19 +43,44 @@
     .navbar-brand {
         flex: 1;
     }
-    
-    .hero h1 {
-        font-size: 2rem;
+
+    /* Dashboard Sidebar Logic */
+    .sidebar {
+        width: 280px !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        height: 100vh !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100 !important;
+        box-shadow: var(--shadow-xl);
     }
     
-    .hero p {
-        font-size: 1rem;
+    /* When active via JS */
+    .sidebar.active {
+        transform: translateX(0) !important;
     }
     
-    .api-grid {
-        grid-template-columns: 1fr !important;
+    .main-panel {
+        margin-left: 0 !important;
+        width: 100% !important;
     }
     
+    /* Overlay background when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(2px);
+        z-index: 90;
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Layouts */
     .package-layout {
         flex-direction: column;
     }
@@ -55,27 +89,73 @@
         flex-direction: column-reverse;
     }
     
-    .dashboard-layout {
+    .doc-layout {
         flex-direction: column;
     }
-    
-    .sidebar {
+    .doc-sidebar {
         width: 100% !important;
-        position: static !important;
-        height: auto !important;
-        min-height: auto !important;
+        margin-bottom: 2rem;
+    }
+
+    /* Typography scale */
+    h1 {
+        font-size: 2.25rem !important;
+    }
+    h2 {
+        font-size: 1.5rem !important;
     }
     
-    .main-panel {
-        margin-left: 0 !important;
-        width: 100% !important;
+    /* Grids */
+    .api-grid {
+        grid-template-columns: 1fr !important;
     }
     
-    .table-responsive {
+    .stat-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    /* Table responsiveness */
+    .table-container {
         overflow-x: auto;
     }
     
     table {
-        min-width: 600px;
+        min-width: 700px;
+    }
+
+    /* Footer layout */
+    .footer .container > div {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .stat-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Forms in modal */
+    .modal-card {
+        padding: 1.5rem !important;
+        width: 95% !important;
+    }
+    
+    /* Card padding */
+    .card-body, .card-header, .card-footer {
+        padding: 1.25rem !important;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 5rem 0 3rem;
+    }
+    
+    .content-area {
+        padding: 1rem;
+    }
+    
+    .topbar {
+        padding: 0 1rem;
     }
 }

@@ -49,8 +49,7 @@
     <script src="js/admin.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('services');
-            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('API Services');
+            initAdmin('services', 'API Services');
             
             const tbody = document.getElementById('admin-services');
             

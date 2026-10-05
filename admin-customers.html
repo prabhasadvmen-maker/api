@@ -49,8 +49,7 @@
     <script src="js/admin.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('sidebar-container').innerHTML = renderAdminSidebar('customers');
-            document.getElementById('topbar-container').innerHTML = renderAdminTopbar('Customers');
+            initAdmin('customers', 'Customers');
             
             const tbody = document.getElementById('admin-customers');
             const users = JSON.parse(localStorage.getItem('apiUsers') || '[]');
