@@ -49,7 +49,7 @@
     <script src="js/admin.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            initAdmin('customers', 'Customers');
+            initAdmin(customers, Customers);
             
             const tbody = document.getElementById('admin-customers');
             const users = JSON.parse(localStorage.getItem('apiUsers') || '[]');

@@ -123,7 +123,28 @@
         min-width: 700px;
     }
 
-    /* Footer layout */
+    /* Fix flex headers pushing layout horizontally */
+    .main-content > .flex.justify-between.items-end, 
+    .mb-8.flex.justify-between.items-end,
+    .mb-6.flex.justify-between.items-center {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.25rem !important;
+    }
+    
+    /* Exceptions where flex row is desired */
+    .card-header.flex {
+        flex-direction: row !important;
+        align-items: center !important;
+    }
+
+    /* Footer layout fix for hardcoded inline grid */
+    .footer .container > div[style*="grid"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2.5rem !important;
+    }
+    
     .footer .container > div {
         grid-template-columns: 1fr !important;
         gap: 2rem !important;
